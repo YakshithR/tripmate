@@ -1,0 +1,5 @@
+body { min-height: 100vh; }
+.card { border-radius: 14px; }
+.form-control, .form-select, .btn { border-radius: 8px; }
+.search-box { max-width: 320px; }
+.table th { white-space: nowrap; font-size: .875rem; color: #596579; }

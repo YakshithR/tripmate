@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Trip {
+  id           Int            @id @default(autoincrement())
+  trip_name    String
+  destination String
+  trip_date    DateTime
+  created_at   DateTime       @default(now())
+  registrations Registration[]
+  @@map("trips")
+}
+
+model Student {
+  id           Int            @id @default(autoincrement())
+  student_name String
+  class_name   String
+  section      String
+  roll_number  String
+  parent_name  String
+  parent_phone String
+  created_at   DateTime       @default(now())
+  registrations Registration[]
+
+  @@unique([class_name, section, roll_number])
+  @@map("students")
+}
+
+model Registration {
+  id              Int      @id @default(autoincrement())
+  registration_id String   @unique
+  student_id      Int
+  trip_id         Int
+  created_at      DateTime @default(now())
+  student         Student  @relation(fields: [student_id], references: [id], onDelete: Cascade)
+  trip            Trip     @relation(fields: [trip_id], references: [id], onDelete: Cascade)
+
+  @@unique([student_id, trip_id])
+  @@index([trip_id])
+  @@map("registrations")
+}
